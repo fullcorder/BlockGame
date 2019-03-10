@@ -1,10 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class BlockGame : MonoBehaviour
 {
+    # region Observation
+
+    public class Observations
+    {
+        public float PlayerPosition;
+
+        public List<Vector3> Blocks;
+
+        public Vector2 BallVelocity;
+
+        public Vector2 BallPosition;
+    }
+
+    public Observations GetObservations()
+    {
+        _blockPositionList.Clear();
+
+        for(var i = 0; i < 36; i++)
+        {
+            if(i < _blockList.Count)
+            {
+                var localPosition = _blockList[i].transform.localPosition;
+                _blockPositionList.Add(localPosition);
+            }
+            else
+            {
+                _blockPositionList.Add(Vector3.zero);
+            }
+        }
+
+        return new Observations()
+        {
+            PlayerPosition = player.transform.localPosition.x,
+            BallPosition = _ball.transform.localPosition,
+            BallVelocity = _ball.Velocity,
+            Blocks = _blockPositionList,
+        };
+    }
+
+    #endregion
+
+
+    public void Move(float size)
+    {
+        if(_gameOver) return;
+        player.Move(size);
+    }
+
+    public Action OnScoreUpdate;
+
+    public Action OnLostBall;
+
+
     [SerializeField] private Color[] blockColors;
 
     [SerializeField] private Block blockPrefab;
@@ -15,13 +69,14 @@ public class BlockGame : MonoBehaviour
 
     [SerializeField] private Player player;
 
-
     [SerializeField] private Transform blocks;
 
     [SerializeField] private TextMeshPro scoreText;
 
 
     private readonly List<Block> _blockList = new List<Block>();
+
+    private readonly List<Vector3> _blockPositionList = new List<Vector3>(36);
 
     private Ball _ball;
 
@@ -35,7 +90,6 @@ public class BlockGame : MonoBehaviour
     {
         get { return _gameOver; }
     }
-
 
     public void StartGame()
     {
@@ -64,12 +118,6 @@ public class BlockGame : MonoBehaviour
         _score = 0;
     }
 
-    public void Move(float size)
-    {
-        if(_gameOver) return;
-        player.Move(size);
-    }
-
     private void Update()
     {
         if(_gameOver) return;
@@ -78,6 +126,7 @@ public class BlockGame : MonoBehaviour
         {
             _gameOver = true;
             Destroy(_ball.gameObject);
+            OnLostBall?.Invoke();
         }
     }
 
@@ -100,6 +149,8 @@ public class BlockGame : MonoBehaviour
     {
         _score++;
         UpdateScore();
+
+        OnScoreUpdate?.Invoke();
 
         var lineNumber = block.LineNumber;
         block.OnDestroy -= OnDestroyBlock;

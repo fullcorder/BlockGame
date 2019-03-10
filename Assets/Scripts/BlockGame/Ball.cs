@@ -10,6 +10,8 @@ public class Ball : MonoBehaviour
 
     [SerializeField] private Vector2 initVelocity;
 
+    public Vector2 Velocity => rigidbody.velocity;
+
     private void Start()
     {
         rigidbody.velocity = initVelocity;
