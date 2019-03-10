@@ -78,6 +78,8 @@ public class BlockGame : Agent
 
     private void Start()
     {
+        _ball = Instantiate(ballPrefab, blocks);
+        _ball.Velocity = Vector2.zero;
         player.OnCollisionEnterBall += OnCollisionEnterBall;
     }
 
@@ -105,7 +107,6 @@ public class BlockGame : Agent
         _currentLineNumber = lineNumber;
 
         //Initialize
-        _ball = Instantiate(ballPrefab, blocks);
         _ball.Velocity = _ball.initVelocity;
     }
 
@@ -121,12 +122,12 @@ public class BlockGame : Agent
     {
         if(_gameOver) return;
 
-        if(_ball.transform.position.y < player.transform.position.y)
+        if(_ball.transform.position.y < player.transform.position.y - 1)
         {
             //Game Over
-            Destroy(_ball);
+            _ball.Velocity = Vector2.zero;
+            _ball.transform.localPosition = Vector3.zero;
             _gameOver = true;
-
             Done();
         }
     }
