@@ -150,7 +150,7 @@ public class BlockGame : Agent
     private void OnDestroyBlock(Block block)
     {
         //Destroy Block
-        AddReward(1.0f);
+        AddReward(0.5f);
 
         _score++;
         UpdateScore();
