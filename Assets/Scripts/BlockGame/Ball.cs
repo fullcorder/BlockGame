@@ -8,13 +8,12 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rigidbody;
 
-    [SerializeField] private Vector2 initVelocity;
+    [SerializeField] public Vector2 initVelocity;
 
-    public Vector2 Velocity => rigidbody.velocity;
-
-    private void Start()
+    public Vector2 Velocity
     {
-        rigidbody.velocity = initVelocity;
+        get => rigidbody.velocity;
+        set => rigidbody.velocity = value;
     }
 
     private void OnCollisionEnter2D(Collision2D other)

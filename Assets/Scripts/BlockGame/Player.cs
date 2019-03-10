@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public Action OnCollisionEnterBall;
+
+
     private Transform _transform;
 
     private void Start()
@@ -18,5 +22,13 @@ public class Player : MonoBehaviour
 
         localPosition.x = x;
         _transform.localPosition = localPosition;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("Ball"))
+        {
+            OnCollisionEnterBall?.Invoke();
+        }
     }
 }

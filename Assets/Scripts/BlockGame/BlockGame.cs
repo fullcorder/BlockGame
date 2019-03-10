@@ -1,48 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MLAgents;
 using TMPro;
 using UnityEngine;
 
-public class BlockGame : MonoBehaviour
+public class BlockGame : Agent
 {
-    # region Observation
+    #region Agent
 
-    public class Observations
+    public override void AgentReset()
     {
-        public float PlayerPosition;
-
-        public List<Vector3> Blocks;
-
-        public Vector2 BallVelocity;
-
-        public Vector2 BallPosition;
+        ResetGame();
+        StartGame();
     }
 
-    public Observations GetObservations()
+    public override void CollectObservations()
     {
-        _blockPositionList.Clear();
+        var position = _ball.transform.position;
+        AddVectorObs(position.x);
+        AddVectorObs(position.y);
 
-        for(var i = 0; i < 36; i++)
-        {
-            if(i < _blockList.Count)
-            {
-                var localPosition = _blockList[i].transform.localPosition;
-                _blockPositionList.Add(localPosition);
-            }
-            else
-            {
-                _blockPositionList.Add(Vector3.zero);
-            }
-        }
+        AddVectorObs(_ball.Velocity.x);
+        AddVectorObs(_ball.Velocity.y);
 
-        return new Observations()
-        {
-            PlayerPosition = player.transform.localPosition.x,
-            BallPosition = _ball.transform.localPosition,
-            BallVelocity = _ball.Velocity,
-            Blocks = _blockPositionList,
-        };
+        var position1 = player.transform.position;
+        AddVectorObs(position1.x);
+        AddVectorObs(position1.y);
+    }
+
+    public override void AgentAction(float[] vectorAction, string textAction)
+    {
+        var f = vectorAction[0];
+        Move(f);
     }
 
     #endregion
@@ -53,10 +43,6 @@ public class BlockGame : MonoBehaviour
         if(_gameOver) return;
         player.Move(size);
     }
-
-    public Action OnScoreUpdate;
-
-    public Action OnLostBall;
 
 
     [SerializeField] private Color[] blockColors;
@@ -76,8 +62,6 @@ public class BlockGame : MonoBehaviour
 
     private readonly List<Block> _blockList = new List<Block>();
 
-    private readonly List<Vector3> _blockPositionList = new List<Vector3>(36);
-
     private Ball _ball;
 
     private int _currentLineNumber;
@@ -89,6 +73,19 @@ public class BlockGame : MonoBehaviour
     public bool GameOver
     {
         get { return _gameOver; }
+    }
+
+
+    private void Start()
+    {
+        player.OnCollisionEnterBall += OnCollisionEnterBall;
+    }
+
+    private void OnCollisionEnterBall()
+    {
+        //AddReward
+        Debug.Log("OnCollisionEnterBall");
+        AddReward(1.0f);
     }
 
     public void StartGame()
@@ -107,7 +104,9 @@ public class BlockGame : MonoBehaviour
 
         _currentLineNumber = lineNumber;
 
+        //Initialize
         _ball = Instantiate(ballPrefab, blocks);
+        _ball.Velocity = _ball.initVelocity;
     }
 
     public void ResetGame()
@@ -124,9 +123,11 @@ public class BlockGame : MonoBehaviour
 
         if(_ball.transform.position.y < player.transform.position.y)
         {
+            //Game Over
+            Destroy(_ball);
             _gameOver = true;
-            Destroy(_ball.gameObject);
-            OnLostBall?.Invoke();
+
+            Done();
         }
     }
 
@@ -147,13 +148,13 @@ public class BlockGame : MonoBehaviour
 
     private void OnDestroyBlock(Block block)
     {
+        //Destroy Block
+        AddReward(1.0f);
+
         _score++;
         UpdateScore();
 
-        OnScoreUpdate?.Invoke();
-
         var lineNumber = block.LineNumber;
-        block.OnDestroy -= OnDestroyBlock;
         _blockList.Remove(block);
 
         if(_blockList.All(b => b.LineNumber != lineNumber))
