@@ -24,15 +24,16 @@ public class Ball : MonoBehaviour
     private void AdjustVelocity()
     {
         var velocity = rigidbody.velocity;
+
         var hasChange = false;
 
-        if(Mathf.Abs(velocity.x) < initVelocity.x)
+        if(Mathf.Abs(velocity.x) < 1f || 3f < Mathf.Abs(velocity.x))
         {
             velocity.x = velocity.x > 0f ? initVelocity.x : -initVelocity.x;
             hasChange = true;
         }
 
-        if(Mathf.Abs(velocity.y) < 2f)
+        if(Mathf.Abs(velocity.y) < 1f || 3f < Mathf.Abs(velocity.y))
         {
             velocity.y = velocity.y > 0f ? initVelocity.y : -initVelocity.y;
             hasChange = true;
