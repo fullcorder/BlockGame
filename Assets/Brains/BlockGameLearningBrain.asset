@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: BlockGameLearningBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 6
+    vectorObservationSize: 5
     numStackedVectorObservations: 1
     vectorActionSize: 01000000
     cameraResolutions: []
     vectorActionDescriptions:
     - 
     vectorActionSpaceType: 1
-  model: {fileID: 11400000, guid: 9413542ffe06444bc93ef864da45c86b, type: 3}
+  model: {fileID: 0}
   inferenceDevice: 0

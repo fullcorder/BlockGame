@@ -986,7 +986,8 @@ MonoBehaviour:
     broadcastingBrains:
     - {fileID: 11400000, guid: 653c032a82fdc4c8fabd79b0522f1643, type: 2}
     - {fileID: 11400000, guid: 2a22039011dac4fe5903658751ffbe52, type: 2}
-    _brainsToControl: []
+    _brainsToControl:
+    - {fileID: 11400000, guid: 653c032a82fdc4c8fabd79b0522f1643, type: 2}
   maxSteps: 0
   trainingConfiguration:
     width: 80
@@ -1060,7 +1061,7 @@ MonoBehaviour:
     maxStep: 0
     resetOnDone: 1
     onDemandDecision: 0
-    numberOfActionsBetweenDecisions: 1
+    numberOfActionsBetweenDecisions: 10
   blockColors:
   - {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   - {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}

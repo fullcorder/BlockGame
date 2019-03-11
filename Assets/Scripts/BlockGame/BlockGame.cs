@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MLAgents;
 using TMPro;
@@ -17,22 +16,21 @@ public class BlockGame : Agent
 
     public override void CollectObservations()
     {
-        var position = _ball.transform.position;
+        var position = _ball.transform.localPosition;
         AddVectorObs(position.x);
         AddVectorObs(position.y);
 
         AddVectorObs(_ball.Velocity.x);
         AddVectorObs(_ball.Velocity.y);
 
-        var position1 = player.transform.position;
+        var position1 = player.transform.localPosition;
         AddVectorObs(position1.x);
-        AddVectorObs(position1.y);
     }
 
     public override void AgentAction(float[] vectorAction, string textAction)
     {
         var f = vectorAction[0];
-        Move(f);
+        Move(f / 10f);
     }
 
     #endregion
@@ -150,7 +148,7 @@ public class BlockGame : Agent
     private void OnDestroyBlock(Block block)
     {
         //Destroy Block
-//        AddReward(0.5f);
+        AddReward(0.5f);
 
         _score++;
         UpdateScore();

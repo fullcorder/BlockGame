@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 519be419e71df4361904aa474b80e6cb
+ScriptedImporter:
+  fileIDToRecycleName:
+    11400000: Assets/Brains/BlockGameLearningBrain5.nn
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 83221ad3db87f4b3b91b041047cb2bc5, type: 3}
