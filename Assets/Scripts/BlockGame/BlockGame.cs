@@ -126,6 +126,8 @@ public class BlockGame : Agent
             _ball.Velocity = Vector2.zero;
             _ball.transform.localPosition = Vector3.zero;
             _gameOver = true;
+
+            AddReward(-1f);
             Done();
         }
     }
