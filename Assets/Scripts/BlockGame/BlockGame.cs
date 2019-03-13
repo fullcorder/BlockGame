@@ -83,8 +83,6 @@ public class BlockGame : Agent
 
     private void OnCollisionEnterBall()
     {
-        //AddReward
-        Debug.Log("OnCollisionEnterBall");
         AddReward(1.0f);
     }
 
