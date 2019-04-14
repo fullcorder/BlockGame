@@ -131,5 +131,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d6774680bbd459ebd1e79ebc172cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 5880421533835154418}
+  ballRigidBody2D: {fileID: 5880421533835154418}
   initVelocity: {x: 2, y: 2}

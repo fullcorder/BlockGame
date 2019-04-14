@@ -6,14 +6,14 @@ using UnityEngine.Video;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rigidbody;
+    [SerializeField] private Rigidbody2D ballRigidBody2D;
 
     [SerializeField] public Vector2 initVelocity;
 
     public Vector2 Velocity
     {
-        get => rigidbody.velocity;
-        set => rigidbody.velocity = value;
+        get => ballRigidBody2D.velocity;
+        set => ballRigidBody2D.velocity = value;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -23,7 +23,7 @@ public class Ball : MonoBehaviour
 
     private void AdjustVelocity()
     {
-        var velocity = rigidbody.velocity;
+        var velocity = ballRigidBody2D.velocity;
 
         var hasChange = false;
 
@@ -39,6 +39,6 @@ public class Ball : MonoBehaviour
             hasChange = true;
         }
 
-        if(hasChange) rigidbody.velocity = velocity;
+        if(hasChange) ballRigidBody2D.velocity = velocity;
     }
 }
