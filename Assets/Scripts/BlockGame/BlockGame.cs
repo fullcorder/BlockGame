@@ -68,11 +68,6 @@ public class BlockGame : Agent
 
     private int _score;
 
-    public bool GameOver
-    {
-        get { return _gameOver; }
-    }
-
 
     private void Start()
     {
